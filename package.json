@@ -1,0 +1,34 @@
+{
+  "name": "helm-charts",
+  "version": "0.1.0",
+  "description": "A set of scripts for pushing Helm/Chart packages to a raw Nexus repository",
+  "bin": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/novomatic-tech/helm-charts.git"
+  },
+  "keywords": [
+    "helm",
+    "charts",
+    "kubernetes",
+    "k8s"
+  ],
+  "author": "NOVOMATIC Technologies Poland S.A.",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/novomatic-tech/helm-charts/issues"
+  },
+  "homepage": "https://github.com/novomatic-tech/helm-charts#readme",
+  "dependencies": {
+    "argparse": "^1.0.10",
+    "axios": "^0.18.0",
+    "child-process-async": "^1.0.1",
+    "js-yaml": "^3.11.0",
+    "lodash": "^4.17.10",
+    "mkdirp": "^0.5.1"
+  },
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  }
+}
