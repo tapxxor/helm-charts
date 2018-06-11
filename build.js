@@ -35,7 +35,7 @@ const ensureDirsReady = (destDir) => {
     mkdirp(destDir);
 };
 
-const buildCharts = async (chartSourcesDir, chartDestDir) => {
+const buildCharts = async (chartSourcesDir, chartDestDir, chartVersion, appVersion) => {
     console.log(`Building helm charts from '${chartSourcesDir}'`);
     const dirs = getChartDirectories(chartSourcesDir);
     console.log(`Found ${dirs.length} chart directories.`);
@@ -46,7 +46,10 @@ const buildCharts = async (chartSourcesDir, chartDestDir) => {
         console.log(`Processing directory: ${dir}`);
         try {
             await helm(`dependency build ${dir}`);
-            await helm(`package ${dir} -d ${chartDestDir}`);
+            let packageCommand = `package ${dir} -d ${chartDestDir}`;
+            packageCommand += chartVersion ? ` --version ${chartVersion}` : ''
+            packageCommand += appVersion ?  ` --app-version ${appVersion}` : ''
+            await helm(packageCommand);
         } catch (e) {
             console.error(e.message);
             throw new Error(`Unable to build '${dir}'`);
@@ -59,10 +62,10 @@ const buildIndex = async (chartsDestDir) => {
     await helm(`repo index ${chartsDestDir}`);
 };
 
-const build = async ({ source, output }) => {
+const build = async ({ source, output, version, appVersion }) => {
     try {
         ensureDirsReady(output);
-        await buildCharts(source, output);
+        await buildCharts(source, output, version, appVersion);
         await buildIndex(output);
     } catch(e) {
         console.error(e);
@@ -74,5 +77,7 @@ module.exports = (parser) => {
     parser.addCommand('build', 'Builds all charts from the <source> directory, places them in the <output> directory and generates a repo index.')
         .addArgument(['-s', '--source'], { help: 'A directory with chart sources. It can either be a directory with a single Charts.yaml file or with subdirectories defining multiple charts', defaultValue: '.' })
         .addArgument(['-o', '--output'], { help: 'A directory chart packages should be produced in', defaultValue: 'charts-output' })
+        .addArgument(['-v', '--version'], { help: 'A chart version if different than set in \'Chart.yaml\'' })
+        .addArgument('--appVersion', { help: 'An appVersion if different than set in \'Chart.yaml\'' })
         .setHandler(build);
 };
