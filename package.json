@@ -1,6 +1,6 @@
 {
   "name": "helm-charts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A set of scripts for pushing Helm/Chart packages to a raw Nexus repository",
   "bin": "./index.js",
   "repository": {

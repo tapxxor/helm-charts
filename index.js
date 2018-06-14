@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const {CommandLineParser} = require("./cmd");
+const {CommandLineParser} = require('./cmd');
 const pkg = require('./package.json');
 
 const options = { version: pkg.version, description: pkg.description, addHelp: true };
