@@ -5,8 +5,8 @@ const pkg = require('./package.json');
 
 const options = { version: pkg.version, description: pkg.description, addHelp: true };
 const setups = [
-    require('./build'),
-    require('./publish')
+    require('./build').setup,
+    require('./publish').setup
 ];
 const cmd = new CommandLineParser(pkg.name, options, setups);
 cmd.parseAndExecute()

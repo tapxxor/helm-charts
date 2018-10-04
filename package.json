@@ -1,8 +1,9 @@
 {
   "name": "helm-charts",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A set of scripts for pushing Helm/Chart packages to a raw Nexus repository",
   "bin": "./index.js",
+  "main": "./main.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/novomatic-tech/helm-charts.git"
@@ -14,7 +15,7 @@
     "k8s"
   ],
   "author": "NOVOMATIC Technologies Poland S.A.",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/novomatic-tech/helm-charts/issues"
   },
