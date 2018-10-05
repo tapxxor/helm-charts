@@ -73,11 +73,14 @@ const build = async ({ source, output, version, appVersion }) => {
     }
 };
 
-module.exports = (parser) => {
-    parser.addCommand('build', 'Builds all charts from the <source> directory, places them in the <output> directory and generates a repo index.')
-        .addArgument(['-s', '--source'], { help: 'A directory with chart sources. It can either be a directory with a single Charts.yaml file or with subdirectories defining multiple charts', defaultValue: '.' })
-        .addArgument(['-o', '--output'], { help: 'A directory chart packages should be produced in', defaultValue: 'charts-output' })
-        .addArgument(['-v', '--version'], { help: 'A chart version if different than set in \'Chart.yaml\'' })
-        .addArgument('--appVersion', { help: 'An appVersion if different than set in \'Chart.yaml\'' })
-        .setHandler(build);
+module.exports = {
+    build,
+    setup: (parser) => {
+        parser.addCommand('build', 'Builds all charts from the <source> directory, places them in the <output> directory and generates a repo index.')
+            .addArgument(['-s', '--source'], { help: 'A directory with chart sources. It can either be a directory with a single Charts.yaml file or with subdirectories defining multiple charts', defaultValue: '.' })
+            .addArgument(['-o', '--output'], { help: 'A directory chart packages should be produced in', defaultValue: 'charts-output' })
+            .addArgument(['-v', '--version'], { help: 'A chart version if different than set in \'Chart.yaml\'' })
+            .addArgument('--appVersion', { help: 'An appVersion if different than set in \'Chart.yaml\'' })
+            .setHandler(build);
+    }
 };

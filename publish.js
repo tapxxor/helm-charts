@@ -176,11 +176,14 @@ const publish = async (args) => {
     }
 };
 
-module.exports = (parser) => {
-    parser.addCommand('publish', 'Publishes all charts from the <chartsDir> directory to the <repository>')
-        .addArgument(['-c', '--chartsDir'], { help: 'A directory containing built charts packages', defaultValue: 'charts-output' })
-        .addArgument(['-r', '--repository'], { help: 'Helm charts repository URL' })
-        .addArgument(['-u', '--username'], { help: 'The username for the Helm charts repository' })
-        .addArgument(['-p', '--password'], { help: 'The password for the Helm charts repository' })
-        .setHandler(publish);
+module.exports = {
+    publish,
+    setup: (parser) => {
+        parser.addCommand('publish', 'Publishes all charts from the <chartsDir> directory to the <repository>')
+            .addArgument(['-c', '--chartsDir'], { help: 'A directory containing built charts packages', defaultValue: 'charts-output' })
+            .addArgument(['-r', '--repository'], { help: 'Helm charts repository URL' })
+            .addArgument(['-u', '--username'], { help: 'The username for the Helm charts repository' })
+            .addArgument(['-p', '--password'], { help: 'The password for the Helm charts repository' })
+            .setHandler(publish);
+    }
 };
