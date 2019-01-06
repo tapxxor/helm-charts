@@ -54,3 +54,39 @@ When the chart that's about to be added already exists in the remote repo:
    npm run helm-charts:build
    npm run helm-charts:publish -- --username <REPO_USER> --password <REPO_PASS>
    ```
+
+# Build docker image 
+docker image build -t helm-nexus-plugin:0.0.1 .
+
+# run a nexus2 repository
+docker run -d -p 8081:8081 --network=host --name nexus -v nexus-data:/sonatype-work sonatype/nexus
+
+# make a site repository
+through nexus from localhost:8081/nexus, login with admin@admin123 to create the site repo
+
+# build charts
+docker container run --network=host --rm -v $(pwd):/input --name push helm-nexus-plugin:0.0.1 helm-charts build  --source /input/elasticsearch
+
+example output
+```
+Building helm charts from '/input/elasticsearch'
+Found 1 chart directories.
+Processing directory: /input/elasticsearch
+$ helm dependency build /input/elasticsearch
+No requirements found in /input/elasticsearch/charts.
+
+$ helm package /input/elasticsearch -d charts-output
+Successfully packaged chart and saved it to: charts-output/elasticsearch-1.15.4.tgz
+
+Building helm charts repo index.
+$ helm repo index charts-output
+```
+# release chart
+docker container run  --rm -v $(pwd):/input --name push helm-nexus-plugin:0.0.1 helm-charts publish --repository http://192.168.2.9:8081/nexus/content/sites/atypon-charts/elasticsearch   --username admin --password admin123
+```
+Unable to get repository index http://192.168.2.9:8081/nexus/content/sites/atypon-charts/elasticsearch/index.yaml. The index file is missing. Assuming this is the first deployment.
+There are 1 new chart(s) to publish
+Publishing charts-output/elasticsearch-1.15.4.tgz
+Updating remote repo index
+Charts deployed successfully.
+```
